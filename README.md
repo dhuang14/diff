@@ -6,16 +6,16 @@ options to support:
 
 ✓ diff -v aka --version                  (prints version, license, and author (you))
 
-✕ diff -q aka --brief                    (reports only whether files are different
+✓ diff -q aka --brief                    (reports only whether files are different
                                             shows nothing if files are identical)
                                             
-✕ diff -i aka --ignore-case              (ignores upper/lower case differences)
+✓ diff -i aka --ignore-case              (ignores upper/lower case differences)
 
-✕ diff -s aka --report-identical-files   (reports if files are the same)
+✓ diff -s aka --report-identical-files   (reports if files are the same)
                                             shows default output if files are different
                                             
 
-✕ diff file1 file2  aka --normal       (default behavior)
+✓ diff file1 file2  aka --normal       (default behavior)
 
 ✕ diff -y aka --side-by-side           (side by side format && prints common lines)
 
