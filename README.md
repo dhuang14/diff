@@ -4,7 +4,7 @@ diff basic commands
 diff [options] file1 file2
 options to support:
 
-diff -v aka --version                  (prints version, license, and author (you))
+✓ diff -v aka --version                  (prints version, license, and author (you))
 
 diff -q aka --brief                    (reports only whether files are different
                                             shows nothing if files are identical)
