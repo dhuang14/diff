@@ -272,8 +272,5 @@ int main(int argc, const char * argv[]) {
         fclose(fin2);
     }
 
-    printf("\nTODO: check line by line in a paragraph, using '|' for differences");
-    printf("\nTODO: this starter code does not yet handle printing all of fin1's paragraphs.");
-    printf("\nTODO: handle the rest of diff's options\n");
     return 0;
 }
