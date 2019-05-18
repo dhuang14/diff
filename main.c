@@ -116,47 +116,164 @@ int main(int argc, const char * argv[]) {
     memset(strings1, 0, sizeof(strings1));
     memset(strings2, 0, sizeof(strings2));
     
-    if (argc != 3) {
+    if (argc < 3) {
         if(strcmp(argv[1], "-v") == 0){
             printf("Version 1.0.0 by David Huang\n");
             return 0;
         }
+        //printf("%s\n%s\n%s\n", argv[0], argv[1], argv[2]);
         fprintf(stderr, "Usage: ./diff file1 file2\n");  exit(ARGC_ERROR);
     }
-
-    FILE *fin1 = openfile(argv[1], "r");
-    FILE *fin2 = openfile(argv[2], "r");
     
-    int count1 = 0, count2 = 0;
-    while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
-    while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
-    
-    para* p = para_first(strings1, count1);
-    para* q = para_first(strings2, count2);
-    if(para_equal(p,q)){
-        para_print(p, printboth);
-        return 0;
-    }
-    if (para_equal(p, q)) { para_print(p, printboth);
-    } else {
-        para_print(q, printright);
+    else if(strcmp(argv[1], "-q") == 0){
+        FILE *fin1 = openfile(argv[2], "r");
+        FILE *fin2 = openfile(argv[3], "r");
         
-        while ((q = para_next(q)) != NULL) {
-            int equal = para_equal(p, q);
-            para_print(q, equal ? printboth : printright);
+        int count1 = 0, count2 = 0;
+        while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
+        while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
+        
+        if(count1 != count2)
+        {
+            printf("Files are not identical\n");
         }
+        else{
+            printf("Files are identical\n");
+        }
+        
+        fclose(fin1);
+        fclose(fin2);
     }
+    else if(strcmp(argv[1], "-i") == 0){
+        FILE *fin1 = openfile(argv[2], "r");
+        FILE *fin2 = openfile(argv[3], "r");
+        
+        int count1 = 0, count2 = 0;
+        while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
+        while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
+        
+        int i = 0;
+        while(strings1[i] != NULL){
+            putchar(tolower(*strings1[i]));
+            i++;
+        }
+        
+        int j = 0;
+        while(strings2[j] != NULL){
+            putchar(tolower(*strings2[j]));
+            j++;
+        }
+        
+        para* p = para_first(strings1, count1);
+        para* q = para_first(strings2, count2);
+        
+        if(para_equal(p,q)){
+            para_print(p, printboth);
+            return 0;
+        }
+        if (para_equal(p, q)) { para_print(p, printboth);
+        } else {
+            para_print(q, printright);
+            
+            while ((q = para_next(q)) != NULL) {
+                int equal = para_equal(p, q);
+                para_print(q, equal ? printboth : printright);
+            }
+        }
+        fclose(fin1);
+        fclose(fin2);
+    }
+    else if(strcmp(argv[1], "-s") == 0){
+        
+        if(strcmp(argv[2], argv[3]) == 0){
+            printf("Files are identical\n");
+        }
+        else{
+            FILE *fin1 = openfile(argv[2], "r");
+            FILE *fin2 = openfile(argv[3], "r");
+        
+            int count1 = 0, count2 = 0;
+            while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
+            while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
+        
+            para* p = para_first(strings1, count1);
+            para* q = para_first(strings2, count2);
+            if(para_equal(p,q)){
+                para_print(p, printboth);
+                return 0;
+            }
+            if (para_equal(p, q)) { para_print(p, printboth);
+            } else {
+                para_print(q, printright);
+                
+                while ((q = para_next(q)) != NULL) {
+                    int equal = para_equal(p, q);
+                    para_print(q, equal ? printboth : printright);
+                }
+            }
+            fclose(fin1);
+            fclose(fin2);
+        }
+
+    }
+    else if(strcmp(argv[1], "--left-column") == 0)
+    {
+        FILE *fin1 = openfile(argv[1], "r");
+        FILE *fin2 = openfile(argv[2], "r");
+        
+        int count1 = 0, count2 = 0;
+        while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
+        while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
+        
+        para* p = para_first(strings1, count1);
+        para* q = para_first(strings2, count2);
+        if(para_equal(p,q)){
+            para_print(p, printboth);
+            return 0;
+        }
+        if (para_equal(p, q)) { para_print(p, printleft);
+        } else {
+            para_print(q, printleft);
+            
+            while ((q = para_next(q)) != NULL) {
+                int equal = para_equal(p, q);
+                para_print(q, equal ? printboth : printright);
+            }
+        }
+        
+        fclose(fin1);
+        fclose(fin2);
+    }
+    else{
+        FILE *fin1 = openfile(argv[1], "r");
+        FILE *fin2 = openfile(argv[2], "r");
     
-    //  printf("p is: %s", para_info(p));
-    //  printf("q is: %s", para_info(q));
-    //  para_print(p, printleft);
-    //  para_print(q, printright);
-    //  printf("p and q are equal: %s\n\n", yesorno(para_equal(p, q)));
+        int count1 = 0, count2 = 0;
+        while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }
+        while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }
     
+        para* p = para_first(strings1, count1);
+        para* q = para_first(strings2, count2);
+        if(para_equal(p,q)){
+            para_print(p, printboth);
+            return 0;
+        }
+        if (para_equal(p, q)) { para_print(p, printboth);
+        } else {
+            para_print(q, printright);
+        
+            while ((q = para_next(q)) != NULL) {
+                int equal = para_equal(p, q);
+                para_print(q, equal ? printboth : printright);
+            }
+        }
+    
+        fclose(fin1);
+        fclose(fin2);
+    }
+
     printf("\nTODO: check line by line in a paragraph, using '|' for differences");
     printf("\nTODO: this starter code does not yet handle printing all of fin1's paragraphs.");
     printf("\nTODO: handle the rest of diff's options\n");
-    fclose(fin1);
-    fclose(fin2);
     return 0;
 }
