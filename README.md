@@ -19,9 +19,9 @@ options to support:
 
 ✕ diff -y aka --side-by-side           (side by side format && prints common lines)
 
-✕ diff --left-column                   (..., prints only the left column of common lines)
+✓ diff --left-column                   (..., prints only the left column of common lines)
 
-✕ diff --suppress-common-lines ...     (side-by-side but doesn't show common lines)
+✓ diff --suppress-common-lines ...     (side-by-side but doesn't show common lines)
 
 ✕ diff -c NUM aka --context=NUM        (shows NUM default 3 lines of copied context)
 
